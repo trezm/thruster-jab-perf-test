@@ -1,51 +1,50 @@
-static-ex 10s 2 connections
+# Counter
 
-```
-Running 10s test @ http://localhost:8080/ping
-  2 threads and 10 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    11.86ms   23.07ms 150.60ms   87.48%
-    Req/Sec     3.60k     1.55k    7.41k    68.88%
-  71461 requests in 10.07s, 18.95MB read
-Requests/sec:   7097.34
-Transfer/sec:      1.88MB
-```
-
-jab-ex 10s 2 connections
-
-```
-Running 10s test @ http://localhost:8080/ping
-  2 threads and 10 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    15.23ms   27.70ms 146.09ms   85.79%
-    Req/Sec     3.52k     1.52k    6.63k    71.79%
-  69990 requests in 10.09s, 18.56MB read
-Requests/sec:   6936.21
-Transfer/sec:      1.84MB
-```
-
-static-ex 30s 10 connections
-
+### jab-ex
 ```
 Running 30s test @ http://localhost:8080/ping
   2 threads and 10 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    13.96ms   26.66ms 202.38ms   87.04%
-    Req/Sec     3.48k     1.48k    7.91k    67.83%
-  205060 requests in 30.05s, 54.37MB read
-Requests/sec:   6823.81
-Transfer/sec:      1.81MB
+    Latency   100.10us   79.43us   5.17ms   99.22%
+    Req/Sec    43.07k     1.59k   45.12k    88.04%
+  2579583 requests in 30.10s, 371.47MB read
+Requests/sec:  85701.79
+Transfer/sec:     12.34MB
 ```
 
-jab-ex 30s 10 connections
-
+### static-ex
 ```
 Running 30s test @ http://localhost:8080/ping
   2 threads and 10 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    13.91ms   26.52ms 212.59ms   86.86%
-    Req/Sec     3.49k     1.53k    7.35k    67.48%
-  205055 requests in 30.04s, 54.36MB read
-Requests/sec:   6825.60
-Transfer/sec:      1.81MB
+    Latency   108.40us  199.96us   9.68ms   99.67%
+    Req/Sec    42.46k     2.85k   62.35k    92.51%
+  2539564 requests in 30.10s, 364.65MB read
+Requests/sec:  84361.88
+Transfer/sec:     12.11MB
+```
+# ServerConfig
+
+### jab-ex
+```
+Running 30s test @ http://localhost:8080/name
+  2 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   107.03us  190.07us  10.09ms   99.61%
+    Req/Sec    42.84k     3.05k   45.85k    90.70%
+  2566315 requests in 30.10s, 359.77MB read
+Requests/sec:  85260.02
+Transfer/sec:     11.95MB
+```
+
+### static-ex
+```
+Running 30s test @ http://localhost:8080/name
+  2 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   119.44us  369.74us  15.77ms   99.43%
+    Req/Sec    42.66k     4.05k   45.31k    94.35%
+  2555259 requests in 30.10s, 358.22MB read
+Requests/sec:  84892.15
+Transfer/sec:     11.90MB
 ```

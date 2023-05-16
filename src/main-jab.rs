@@ -42,6 +42,21 @@ impl Counter for _Counter {
     }
 }
 
+trait StaticConfig {
+    fn get_name(&self) -> String;
+}
+
+#[derive(Default)]
+struct _StaticConfig {
+    name: String,
+}
+
+impl StaticConfig for _StaticConfig {
+    fn get_name(&self) -> String {
+        self.name.clone()
+    }
+}
+
 fn generate_context(request: HyperRequest, state: &ServerConfig, _path: &str) -> Ctx {
     Ctx::new(
         request,
@@ -73,18 +88,40 @@ async fn stats(context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx>
     next(context).await
 }
 
+#[middleware_fn]
+async fn name(mut context: Ctx, _next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
+    let name = fetch!(context.extra.jab, dyn StaticConfig).get_name();
+
+    context.set("Content-Type", "application/json");
+    context.body(&format!(
+        "{{
+    name: {}
+}}",
+        name
+    ));
+
+    Ok(context)
+}
+
 #[tokio::main]
 pub async fn main() -> Result<(), Box<dyn Error>> {
     let mut jab = JabDI::default();
 
     provide!(jab, dyn Counter, _Counter::default());
+    provide!(
+        jab,
+        dyn StaticConfig,
+        _StaticConfig {
+            name: "Obi Wan".to_string()
+        }
+    );
 
     let app = App::<HyperRequest, Ctx, ServerConfig>::create(
         generate_context,
         ServerConfig { jab: Arc::new(jab) },
     )
-    .middleware("/", m![stats])
-    .get("/ping", m![ping]);
+    .get("/ping", m![stats, ping])
+    .get("/name", m![name]);
 
     let server = HyperServer::new(app);
     server

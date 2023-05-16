@@ -15,11 +15,13 @@ pub type Ctx = TypedHyperContext<RequestConfig>;
 
 pub struct ServerConfig {
     pub req_counter: Arc<AtomicUsize>,
+    pub name: String,
 }
 
 #[derive(Clone, Default)]
 pub struct RequestConfig {
     pub req_counter: Arc<AtomicUsize>,
+    pub name: String,
 }
 
 fn generate_context(request: HyperRequest, state: &ServerConfig, _path: &str) -> Ctx {
@@ -27,6 +29,7 @@ fn generate_context(request: HyperRequest, state: &ServerConfig, _path: &str) ->
         request,
         RequestConfig {
             req_counter: state.req_counter.clone(),
+            name: state.name.clone(),
         },
     )
 }
@@ -51,16 +54,30 @@ async fn stats(context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx>
     next(context).await
 }
 
+#[middleware_fn]
+async fn name(mut context: Ctx, _next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
+    context.set("Content-Type", "application/json");
+    context.body(&format!(
+        "{{
+    name: {}
+}}",
+        context.extra.name
+    ));
+
+    Ok(context)
+}
+
 #[tokio::main]
 pub async fn main() -> Result<(), Box<dyn Error>> {
     let app = App::<HyperRequest, Ctx, ServerConfig>::create(
         generate_context,
         ServerConfig {
             req_counter: Arc::new(AtomicUsize::new(0)),
+            name: "Obi Wan".to_string(),
         },
     )
-    .middleware("/", m![stats])
-    .get("/ping", m![ping]);
+    .get("/ping", m![stats, ping])
+    .get("/name", m![name]);
 
     let server = HyperServer::new(app);
     server

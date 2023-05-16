@@ -1,7 +1,6 @@
-# Multi threaded
-
 static-ex 10s 2 connections
 
+```
 Running 10s test @ http://localhost:8080/ping
   2 threads and 10 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
@@ -10,9 +9,11 @@ Running 10s test @ http://localhost:8080/ping
   71461 requests in 10.07s, 18.95MB read
 Requests/sec:   7097.34
 Transfer/sec:      1.88MB
+```
 
 jab-ex 10s 2 connections
 
+```
 Running 10s test @ http://localhost:8080/ping
   2 threads and 10 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
@@ -21,9 +22,11 @@ Running 10s test @ http://localhost:8080/ping
   69990 requests in 10.09s, 18.56MB read
 Requests/sec:   6936.21
 Transfer/sec:      1.84MB
+```
 
 static-ex 30s 10 connections
 
+```
 Running 30s test @ http://localhost:8080/ping
   2 threads and 10 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
@@ -32,9 +35,11 @@ Running 30s test @ http://localhost:8080/ping
   205060 requests in 30.05s, 54.37MB read
 Requests/sec:   6823.81
 Transfer/sec:      1.81MB
+```
 
 jab-ex 30s 10 connections
 
+```
 Running 30s test @ http://localhost:8080/ping
   2 threads and 10 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
@@ -43,3 +48,4 @@ Running 30s test @ http://localhost:8080/ping
   205055 requests in 30.04s, 54.36MB read
 Requests/sec:   6825.60
 Transfer/sec:      1.81MB
+```
